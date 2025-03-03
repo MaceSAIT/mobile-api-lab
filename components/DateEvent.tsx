@@ -5,14 +5,14 @@ import axios from 'axios';
 
 export default async function dateEvent() {
 
-const [month, setMonth] = useState('1');
+const [month, setMonth] = useState('January');
 const [date, setDate] = useState('1');
 
 const API_URL = `https://numbersapi.p.rapidapi.com/${month}/${date}/date`;
 
 const options = {
 	method: 'GET',
-    url: API_URL,
+    url: `https://numbersapi.p.rapidapi.com/${month}/${date}/date`,
 	headers: {
 		'x-rapidapi-key': 'b63774abbamshb77913e6f19fcaep164156jsn1e2a91362651',
 		'x-rapidapi-host': 'numbersapi.p.rapidapi.com'
