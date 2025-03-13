@@ -7,5 +7,6 @@ export async function getDB() {
     if (error) {
         throw error;
     }
+    //console.log(data[1]);
     return data;
 }

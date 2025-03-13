@@ -1,31 +1,47 @@
 // HomeScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import CallAPI from '../../components/callAPI'; // Adjust the path as needed
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { getDB } from '../../lib/supabase_crud'; 
 
+interface DataItem {
+  created_at: string;
+  id: number;
+}
 
 
-const HomeScreen: React.FC = () => {
-  const [showCallAPI, setShowCallAPI] = useState<boolean>(false);
+export default function bonusPage() {
 
-  let data = getDB();
+  
 
-  const toggleCallAPI = () => {
-    setShowCallAPI(!showCallAPI);
-    data = getDB();
+  const [data, setData] = useState<DataItem[]>([]); // Initialize with an empty array
+
+
+  
+  async function fetchData() {
+    const result = await getDB();
+    setData(result);
   };
+
+  fetchData();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textSubHeader}>API Fetch Data Page</Text>
-      <TouchableOpacity onPress={toggleCallAPI}>
-        <View style={styles.whiteBox}>
-          <Text style={styles.textButtons}>Make API Call</Text>
-        </View>
-      </TouchableOpacity>
-      {showCallAPI && <CallAPI />}
-      <Text style={styles.textButtons}>{data.toString()}</Text>
+      <Text style={styles.textHeader}>API Fetch Data Page</Text>
+
+
+      <ScrollView>
+        {data.map(({created_at, id}) => {
+          return (
+            <View key={id.toString()} style={styles.whiteBox}>
+              <Text style={styles.textSubHeader}>ID:</Text>
+              <Text style={styles.textButtonsLeft}>{id}</Text>
+              <Text style={styles.textSubHeader}>Time Created:</Text>
+              <Text style={styles.textButtonsLeft}>{created_at}</Text>
+            </View>
+          )
+        })}
+      </ScrollView>
+
     </View>
   );
 };
@@ -50,17 +66,17 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     fontWeight: 'bold',
-    fontSize: 50,
+    fontSize: 30,
     color: 'black',
-    marginLeft: 40,
+    textAlign: 'center',
     marginTop: 100,
   },
   textSubHeader: {
     fontWeight: 'bold',
     fontSize: 25,
     color: 'black',
-    marginLeft: 40,
-    marginTop: 60,
+    marginLeft: 20,
+    marginTop: 10,
     marginBottom: 10,
   },
   textButtons: {
@@ -69,6 +85,12 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
   },
+  textButtonsLeft: {
+    fontWeight: 'regular',
+    fontSize: 20,
+    color: 'black',
+    textAlign: 'left',
+    marginLeft: 30,
+  },
 });
 
-export default HomeScreen;
