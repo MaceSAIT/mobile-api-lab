@@ -1,81 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList } from 'react-native';
-import axios from 'axios';
+// HomeScreen.tsx
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import CallAPI from '../../components/callAPI'; // Adjust the path as needed
 
+const HomeScreen: React.FC = () => {
+    const [showCallAPI, setShowCallAPI] = useState<boolean>(false);
 
-export default async function dateEvent() {
-
-const [month, setMonth] = useState('1');
-const [date, setDate] = useState('1');
-
-const API_URL = `https://numbersapi.p.rapidapi.com/${month}/${date}/date`;
-
-const options = {
-	method: 'GET',
-    url: API_URL,
-	headers: {
-		'x-rapidapi-key': 'b63774abbamshb77913e6f19fcaep164156jsn1e2a91362651',
-		'x-rapidapi-host': 'numbersapi.p.rapidapi.com'
-	}
-};
-
-async function fetchData() {
-    try {
-        const response = await axios.request(options);
-        console.log(response.data);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-fetchData();
-
-return (
-    <View style={styles.container}>
-        <View style={styles.card}>
-            <Text>Enter Month: </Text>
-            <TextInput 
-                style={styles.input}
-                onChangeText={setMonth}
-                value={month}
-                placeholder='Month'>
-
-            </TextInput>
-        </View>
-
-        <View style={styles.card}>
-            <Text>Enter Date: </Text>
-            <TextInput 
-                style={styles.input}
-                onChangeText={setDate}
-                value={date}
-                placeholder='Date'>
-
-            </TextInput>
-        </View>
-    </View>
-        )
+    const toggleCallAPI = () => {
+        setShowCallAPI(!showCallAPI);
     };
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        card: {
-            borderWidth: 2,
-            padding: 15,
-            paddingHorizontal: 100,
-            borderRadius: 30,
-        },
-        input: {
-            borderWidth: 1,
-            justifyContent: 'center',
-            
-        },
-        button: {
-            backgroundColor: 'black',
-        }
-    })
-    
+    return (
+        <View style={styles.container}>
+            <Text style={styles.textSubHeader}>API Call Page</Text>
+            <TouchableOpacity onPress={toggleCallAPI}>
+                <View style={styles.whiteBox}>
+                    <Text style={styles.textButtons}>Make API Call</Text>
+                </View>
+            </TouchableOpacity>
+            {showCallAPI && <CallAPI />}
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: '#F3F2F8',
+        justifyContent: 'flex-start',
+    },
+    whiteBox: {
+        backgroundColor: '#FFFFFF',
+        borderWidth: 0,
+        borderRadius: 20,
+        width: 350,
+        height: 'auto',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+        padding: 20,
+    },
+    textHeader: {
+        fontWeight: 'bold',
+        fontSize: 50,
+        color: 'black',
+        marginLeft: 40,
+        marginTop: 100,
+    },
+    textSubHeader: {
+        fontWeight: 'bold',
+        fontSize: 25,
+        color: 'black',
+        marginLeft: 40,
+        marginTop: 60,
+        marginBottom: 10,
+    },
+    textButtons: {
+        fontWeight: 'regular',
+        fontSize: 20,
+        color: 'black',
+        textAlign: 'center',
+    },
+});
+
+export default HomeScreen;

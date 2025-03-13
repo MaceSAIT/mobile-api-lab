@@ -2,23 +2,30 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CallAPI from '../../components/callAPI'; // Adjust the path as needed
+import { getDB } from '../../lib/supabase_crud'; 
+
+
 
 const HomeScreen: React.FC = () => {
   const [showCallAPI, setShowCallAPI] = useState<boolean>(false);
 
+  let data = getDB();
+
   const toggleCallAPI = () => {
     setShowCallAPI(!showCallAPI);
+    data = getDB();
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textSubHeader}>API Call Page</Text>
+      <Text style={styles.textSubHeader}>API Fetch Data Page</Text>
       <TouchableOpacity onPress={toggleCallAPI}>
         <View style={styles.whiteBox}>
           <Text style={styles.textButtons}>Make API Call</Text>
         </View>
       </TouchableOpacity>
       {showCallAPI && <CallAPI />}
+      <Text style={styles.textButtons}>{data.toString()}</Text>
     </View>
   );
 };
